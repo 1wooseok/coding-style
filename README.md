@@ -1,1 +1,6 @@
-# coding-style
+# 소개
+개인적으로 사용하는 자바스크립트(+ 타입스크립트) 코딩 스타일입니다.
+
+`eslint.json`
+
+`prettier.json` 파일도 포함되어있습니다.
