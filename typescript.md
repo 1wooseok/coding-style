@@ -153,7 +153,7 @@ date: 2023-08-14
     ```cs
     interface ISomeInterface;
     ```
-
+// ** null 관련해서는 더 고민해봐야됨. undefined문제도 있고 외부와 통신하는 경우가 많기때문에 애매한게 있음** //
 16. 함수에서 `null`을 반환할 때는 함수 이름 뒤에 `OrNull`을 붙인다.
 
     ```ts
@@ -212,27 +212,9 @@ date: 2023-08-14
     }
     ```
 
-23. 싱글턴 패턴 대신에 정적(static) 클래스를 사용한다.
+<!-- 23. 싱글턴 패턴 대신에 정적(static) 클래스를 사용한다. -->
 
 24. 외부로부터 들어오는 데이터의 유효성은 외부/내부 경계가 바뀌는 곳에서 검증(validate)하고 문제가 있을 경우 내부 함수로 전달하기 전에 반환해 버린다. 이는 경계를 넘어 내부로 들어온 모든 데이터는 유효하다고 가정한다는 뜻이다.
-    ```ts
-    const firstMemberIdOrNull = users.find(u => u.isMember);
-    // 해당 id가 없을경우,
-    // getRegisterDateById로 전달하기 직전 경계에서 예외처리
-    if (!firstMemberIdOrNull)
-    {
-      return;
-    }
-
-    getRegisterDateById(firstMemberIdOrNull);
-
-    ----------------------------------
-    // 외부에서 항상 옳바른 id를 받는다고 가정
-    function getRegisterDateById(userId: number): Date
-    {
-      return users.find(u => u.id === userId).joinDate;
-    };
-    ```
 
 25. 따라서 내부 함수에서 예외(익셉션)를 던지지 않으려 노력한다. 예외는 경계에서만 처리하는 것을 원칙으로 한다.
 
@@ -252,7 +234,7 @@ date: 2023-08-14
 
   27. 재사용되지 않는 함수가 많아지지 않게 노력한다.
 
-      ( 단, `unit test`가 꼭 필요한 경우 함수 추출 허용. )
+      ( 단, `unit test`가 꼭 필요한 경우, 재사용 되지 않아도 함수 추출 허용. )
 
 ## II. 소스 코드 포맷팅
 
