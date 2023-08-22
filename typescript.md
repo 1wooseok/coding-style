@@ -1,6 +1,6 @@
 ---
 title: "typescript 코딩 스타일"
-date: 2023-08-14
+date: 2023-08-23
 
 ---
 
@@ -16,18 +16,11 @@ date: 2023-08-14
 <!-- `Visual studio Code`에서 import할 수 있는 세팅은 [여기서]() 다운받을 수 있습니다. -->
 
 ## I. 기본 규칙
+코드의 가독성을 최우선으로 함
 
-0. `any`, `as`, `!(non-null-assertion)` 키워드를 사용하지 않으려 노력한다.
+1. `any`, `as`, `!(non-null-assertion)` 키워드를 사용하지 않으려 노력한다.
 
-1. 함수 이름은 기본적으로 동사
-
-   ```ts
-   function getAge(): number {};
-
-   function updateUser(): void {};
-   ```
-
-2. 변수 & 함수 이름은 `camelCase` 사용한다.
+2. 변수 & 함수 이름은 `camelCase` 사용
 
    ```ts
    const someNumber = 1;
@@ -35,7 +28,7 @@ date: 2023-08-14
    function someMethod(someParam: number): void {}
    ```
 
-3. 상수의 이름은 모두 대문자로 하되 밑줄로 각 단어를 분리한다. 참조형의 경우 `as const`키워드를 붙여준다.
+3. 상수는 `SNAKE_CASE` 사용 ( 참조형의 경우 `as const`키워드 붙여주기 )
 
    ```ts
    const SOME_CONSTANT = 1;
@@ -43,19 +36,15 @@ date: 2023-08-14
    const COLOR_PALETTE = ["red", "green", "blue"] as const;
    ```
 
-4. `boolean` 값은 앞에 `is`, `has`, `can`, `should` 중에 하나를 붙인다.
-
-    ```ts
-    const isValidYear = true;
-    const hasId = true;
-    const canCreate = true;
-    const shouldRedirect = true;
-    ```
-
-5. 단순히 `boolean` 상태를 return하는 함수 이름은 최대한 `is`, `can`, `has`, `should` 를 사용한다.
+5. `boolean` 상태를 `return`하는 함수 or 변수 이름은 최대한 `is`, `can`, `has`, `should` 사용
 ( 부자연스러울 경우 상태를 나타내는 다른 동사 사용 )
 
    ```ts
+   const isValidYear = true;
+   const hasId = true;
+   const canCreate = true;
+   const shouldRedirect = true;
+   
    function isAlive(Person person): boolean;
    function hasChild(Person person): boolean;
    function canAccept(Person person): boolean;
@@ -64,7 +53,7 @@ date: 2023-08-14
    function exists(Person person): boolean;
    ```
 
-6. 형변환은 최대한 `String(), Number(), Boolean()` 함수를 사용한다
+6. 형변환은 최대한 `String(), Number(), Boolean()` 함수를 사용
    ```ts
    // Good
    let num = Number(11);
@@ -80,31 +69,10 @@ date: 2023-08-14
 
 7. 복수형 데이터는 `s`를 붙여준다.
 
-8. 단순 반복문에 사용되는 변수가 아닌 경우엔 `i`, `e` 같은 변수명 대신 `index`, `employee` 처럼 변수에 저장되는 데이터를 한 눈에 알아볼 수 있는 변수명을 사용한다.
-
-9. 값을 반환하는 함수의 이름은 무엇을 반환하는지 알 수 있게 짓는다.
-
-    ```ts
-    function getAge(): number {
-      return 100;
-    };
-    ```
-
-10. 익명 함수의 매개변수는 바로 앞에있는 값의 이니셜을 사용한다.
-    ```ts
-    // Bad
-    const cpIds = controlPoints.map(x => x.id).filter(x => x > 100);
-
-    // Good
-    const cpIds = controlPoints.map(cp => cp.id).filter(cpId => cpId > 100);
-
-    const livingMonsters = monster.filter(m => m.HP > 0).map(lm => lm.Name);
-    ```
-
 11. 3항연산자가 `1 depth`를 넘어가면 함수로 바꿔 작성한다
     ```ts
     // Bad
-    const value = x ? y : z ? w : t; // 중간에 디버깅 걸기 애매함
+    const value = x ? y : z ? w : t; // 중간에 브레이크 걸기 애매함
 
     // Good
     const value = (() => {
@@ -113,6 +81,7 @@ date: 2023-08-14
       }
 
       if (z) {
+        debugger; // 중간에 브레이크 걸기 편함
         return w;
       }
 
@@ -122,8 +91,10 @@ date: 2023-08-14
 
 12. 변수에 할당된 값이 없다면 타입을 명시해준다.
     ```ts
-    let result; // Bad
-    let result: Monster[]; // Good
+    // Bad
+    let result;
+    // Good
+    let result: TMonster[]; 
 
     if (x) {
       result = x.filter(y => y > 0);
@@ -135,11 +106,6 @@ date: 2023-08-14
     return result;
     ```
 
-13. 재귀 함수는 이름 뒤에 `Recursive`를 붙인다.
-    ```ts
-    function FibonacciRecursive(): number {}
-    ```
-
 14. `enum`을 선언할 때는 앞에 `E`를 붙인다
     ```ts
     enum EDirection
@@ -149,26 +115,23 @@ date: 2023-08-14
     }
     ```
 
-15. 인터페이스를 선언할 때는 앞에 `I`를 붙인다.
+15. `type alias`를 선언할 때는 앞에 `T`를 붙인다
+    ```tsx
+    type TUser = { name: string; age: nunber; }
+    ```
+
+16. `interface`를 선언할 때는 앞에 `I`를 붙인다.
     ```cs
     interface ISomeInterface;
     ```
-// ** null 관련해서는 더 고민해봐야됨. undefined문제도 있고 외부와 통신하는 경우가 많기때문에 애매한게 있음** //
-16. 함수에서 `null`을 반환할 때는 함수 이름 뒤에 `OrNull`을 붙인다.
+
+17. 함수에서 `null`을 `return`할 때는 함수 이름 뒤에 `OrNull`을 붙인다.
 
     ```ts
     function GetNameOrNull(): string | null
     ```
 
-17. `null` 매개변수를 사용할 경우 변수명 뒤에 `OrNull`를 붙인다
-
-    ```ts
-    function getUser(userIdOrNull: number | null)
-    {
-    }
-    ```
-
-18. 매개변수가 3개 이상이면 `object`형태로 받는다
+19. 매개변수가 3개 이상이면 `object`로 받는다
     ```ts
     // Good
     type Form = { name: string, age: number, phone: string };
@@ -178,47 +141,13 @@ date: 2023-08-14
     function initForm(name: string, age: number, phone: string)
     ```
 
-19. `switch` 문에서 `default:` 케이스가 절대 실행될 일이 없는 경우, `throw` 문을 추가한다.
+21. 외부로부터 들어오는 데이터의 유효성은 외부/내부 경계가 바뀌는 곳에서 검증(validate)하고 문제가 있을 경우 내부 함수로 전달하기 전에 `return`해 버린다. 이는 경계를 넘어 내부로 들어온 모든 데이터는 유효하다고 가정한다는 뜻이다.
 
-    ```cs
-    switch (type)
-    {
-      case 1:
-        ...
-        break;
-      default:
-        throw "절대 실행되면 안되는 코드. 혹시 실행되면 터트려서 확인하기";
-    }
-    ```
+22. 따라서 내부 함수에서 예외를 던지지 않으려 노력한다. 예외는 경계에서만 처리하는 것을 원칙으로 한다.
 
-20. 컴포넌트는 각각 독립된 소스 파일에 있어야 한다. 단, 작은 컴포넌트 몇 개를 한 파일 안에 같이 넣어두는 것이 상식적일 경우 예외를 허용한다.
+23. 위 규칙의 예외: `enum` 형을 `switch` 문에서 처리할 때 실수로 처리 안 한 `enum` 값을 찾기 위해 `default:` 케이스에서 예외를 던지는 것은 허용.
 
-21. 상수로 사용하는 멤버 변수에는 `static readonly`를 사용한다.
-    ```ts
-    public static readonly MY_CONST_OBJECT = new MyConstClass();
-    ```
-
-22. 초기화 후 값이 변하지 않는 멤버변수는 `readonly`로 선언한다.
-
-    ```ts
-    public class Account
-    {
-      private readonly mPassword: string;
-
-      public Account(password: string)
-      {
-        mPassword = password;
-      }
-    }
-    ```
-
-<!-- 23. 싱글턴 패턴 대신에 정적(static) 클래스를 사용한다. -->
-
-24. 외부로부터 들어오는 데이터의 유효성은 외부/내부 경계가 바뀌는 곳에서 검증(validate)하고 문제가 있을 경우 내부 함수로 전달하기 전에 반환해 버린다. 이는 경계를 넘어 내부로 들어온 모든 데이터는 유효하다고 가정한다는 뜻이다.
-
-25. 따라서 내부 함수에서 예외(익셉션)를 던지지 않으려 노력한다. 예외는 경계에서만 처리하는 것을 원칙으로 한다.
-
-26. 위 규칙의 예외: `enum` 형을 `switch` 문에서 처리할 때 실수로 처리 안 한 `enum` 값을 찾기 위해 `default:` 케이스에서 예외를 던지는 것은 허용.
+    ( + `debugger`와 [babel-plugin-no-debugger](https://babeljs.io/docs/babel-plugin-transform-remove-debugger)를 같이 사용해도 좋음 )
 
     ```cs
     switch (accountType)
@@ -228,13 +157,17 @@ date: 2023-08-14
         case AccountType.Business:
             return somethingElse;
         default:
+            debugger;
             throw new NotImplementedException($"unhandled switch case: {accountType}");
     }
     ```
 
-  27. 재사용되지 않는 함수가 많아지지 않게 노력한다.
+  24. 재사용되지 않는 함수는 만들지 않으려고 노력한다.
 
-      ( 단, `unit test`가 꼭 필요한 경우, 재사용 되지 않아도 함수 추출 허용. )
+      **단 아래의 경우 함수 추출 허용**
+         1.  `unit test`가 꼭 필요한 경우
+         2.  코드가 길어서 가독성을 해치는 경우
+         3.  캐시처리를 해야하는 경우
 
 ## II. 소스 코드 포맷팅
 
@@ -244,7 +177,7 @@ date: 2023-08-14
 
 3. 쌍따옴표를 사용한다 [(Prettier) Quotes: false](https://prettier.io/docs/en/options.html#quotes)
 
-2. 중괄호 안( `{ }` )에 코드가 한 줄만 있더라도 반드시 중괄호를 사용한다. [(ESLint) curly: all](https://eslint.org/docs/latest/rules/curly)
+4. 중괄호 안( `{ }` )에 코드가 한 줄만 있더라도 반드시 중괄호를 사용한다. [(ESLint) curly: all](https://eslint.org/docs/latest/rules/curly)
 
     ```ts
     // Good
@@ -256,7 +189,7 @@ date: 2023-08-14
     if (true) return; // 중간에 디버깅 걸기가 애매함.
     ```
 
-3. 한 줄에 변수 하나만 선언한다.
+5. 한 줄에 변수 하나만 선언한다.
 
    **틀린 방식:**
 
@@ -272,7 +205,7 @@ date: 2023-08-14
    ```
 
 
-4. if/else를 사용할때 다음줄에 적는다 [(ESLint) brace-style: Stroustrup](https://eslint.org/docs/latest/rules/brace-style#rule-details:~:text=5-,One,-common%20variant%20of)
+6. 제어문(if/else, try/catch) 사용시 다음줄에 적어준다 [(ESLint) brace-style: Stroustrup](https://eslint.org/docs/latest/rules/brace-style#rule-details:~:text=5-,One,-common%20variant%20of)
     ```ts
     // Good
     if (true) {
