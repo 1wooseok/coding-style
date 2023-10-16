@@ -1,6 +1,6 @@
 ---
 title: "typescript 코딩 스타일"
-date: 2023-08-23
+date: 2023-10-16
 
 ---
 
@@ -93,6 +93,7 @@ date: 2023-08-23
     ```ts
     // Bad
     let result;
+    
     // Good
     let result: TMonster[]; 
 
@@ -125,20 +126,28 @@ date: 2023-08-23
     interface ISomeInterface;
     ```
 
-17. 함수에서 `null`을 `return`할 때는 함수 이름 뒤에 `OrNull`을 붙인다.
+17. 함수에서 `null, undefined`을 `return`할 때는 함수 이름 뒤에 `OrNull, orUndef`을 붙인다.
 
     ```ts
-    function GetNameOrNull(): string | null
+    // Good
+    function getUserOrNull(id: number): TUser | null
+
+    // Bad
+    function getUser(id: number): TUser | null
     ```
 
 19. 매개변수가 3개 이상이면 `object`로 받는다
     ```ts
     // Good
-    type Form = { name: string, age: number, phone: string };
-    function initForm({ name, age, phone }: Form); // 매개변수 object
+    type Form = { 
+      Guid: numer;
+      id: number;
+      age: number;
+    };
+    function initForm({ Guid, id, age }: Form);
 
     // Bad
-    function initForm(name: string, age: number, phone: string)
+    function initForm(Guid: number, id: number, age: number)
     ```
 
 21. 외부로부터 들어오는 데이터의 유효성은 외부/내부 경계가 바뀌는 곳에서 검증(validate)하고 문제가 있을 경우 내부 함수로 전달하기 전에 `return`해 버린다. 이는 경계를 넘어 내부로 들어온 모든 데이터는 유효하다고 가정한다는 뜻이다.
@@ -167,7 +176,7 @@ date: 2023-08-23
       **단 아래의 경우 함수 추출 허용**
          1.  `unit test`가 꼭 필요한 경우
          2.  코드가 길어서 가독성을 해치는 경우
-         3.  캐시처리를 해야하는 경우
+         3.  메모이제이션 해야하는 경우
 
 ## II. 소스 코드 포맷팅
 
@@ -189,23 +198,7 @@ date: 2023-08-23
     if (true) return; // 중간에 디버깅 걸기가 애매함.
     ```
 
-5. 한 줄에 변수 하나만 선언한다.
-
-   **틀린 방식:**
-
-   ```cs
-   int counter = 0, index = 0;
-   ```
-
-   **올바른 방식:**
-
-   ```cs
-   int counter = 0;
-   int index = 0;
-   ```
-
-
-6. 제어문(if/else, try/catch) 사용시 다음줄에 적어준다 [(ESLint) brace-style: Stroustrup](https://eslint.org/docs/latest/rules/brace-style#rule-details:~:text=5-,One,-common%20variant%20of)
+5. 제어문(if/else, try/catch) 사용시 다음줄에 적어준다 [(ESLint) brace-style: Stroustrup](https://eslint.org/docs/latest/rules/brace-style#rule-details:~:text=5-,One,-common%20variant%20of)
     ```ts
     // Good
     if (true) {
