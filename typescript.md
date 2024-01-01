@@ -1,6 +1,6 @@
 ---
 title: "typescript 코딩 스타일"
-date: 2023-10-16
+date: 2024-01-01
 
 ---
 
@@ -215,3 +215,19 @@ date: 2023-10-16
       return;
     }
     ```
+6. switch/case에서 의도적으로 fallthrough 하는 경우 주석으로 적어준다. [(ESLint) no-fallthrough](https://eslint.org/docs/latest/rules/no-fallthrough)
+   ```ts
+   switch(foo) {
+     // Good
+     case 1: {
+       doSomething();
+       // falls through
+     }
+
+     // Bad
+     case 2: {
+       doSomethingElse();
+     }
+   }
+   ```
+   
